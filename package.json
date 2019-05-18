@@ -1,0 +1,14 @@
+{
+  "name": "net.witr.wcordova.login",
+  "version": "0.0.1",
+  "displayName": "wCordovaLogin",
+  "cordova": {
+    "platforms": [
+      "android",
+      "browser"
+    ]
+  },
+  "dependencies": {
+    "cordova-android": "~7.1.4"
+  }
+}

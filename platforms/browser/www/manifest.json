@@ -1,0 +1,11 @@
+{
+  "background_color": "#FFF",
+  "display": "standalone",
+  "name": "wCordovaLogin",
+  "short_name": "wCordovaLogin",
+  "version": "net.witr.wcordova.login",
+  "description": "A sample Apache Cordova login application.",
+  "author": "witrdotnet",
+  "icons": [],
+  "start_url": "index.html"
+}
