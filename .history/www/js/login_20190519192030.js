@@ -45,27 +45,20 @@ function setupPageLogin() {
 
 function loggedCheck() {
     persisLog();
-  /*   setTimeout(function () {
-        if (localStorage.auth !== "") {
-            var myClientCookieItems = JSON.parse(localStorage.getItem('auth'));
-            console.log('myClientCookieItems: ', myClientCookieItems);
-            var myClientCookie = myClientCookieItems.cookie;
-             var serverCookie = document.cookie;
-            console.log('myClientCookie: ', 'cookie=' + myClientCookie);
-            console.log('serverCookie: ', document.cookie);
-            if (myClientCookie = document.cookie) {
-                //do something when user logged in
-                console.log("logged");
-            } else {
-                //do something when user logged out
-                console.log("logged out");
-            }
+    setTimeout(function () {
+        var myClientCookieItems = JSON.parse(localStorage.getItem('auth'));
+        console.log('myClientCookieItems: ', myClientCookieItems);
+        var myClientCookie = myClientCookieItems.cookie;
+        console.log('myClientCookie: ', 'cookie=' + myClientCookie);
+        console.log('serverCookie: ', document.cookie);
+        if (myClientCookie = document.cookie) {
+            //do something when user logged in
+            console.log("logged");
+        } else {
+            //do something when user logged out
+            console.log("logged out");
         }
-
-
-
     }, 2000);
- */
 
     /*   if (document.cookie.indexOf('wp_user_logged_in') !== -1) {
       //do something when user logged in
@@ -134,7 +127,7 @@ function logoutUser() {
         $.mobile.changePage("#login", {
             transition: "slide"
         });
-        // loggedCheck();
+        loggedCheck();
     });
 }
 
@@ -210,23 +203,17 @@ var loginAuth = {
 
 
 function persisLog() {
-    if (localStorage.loginAuth !== "") {
-        var credentials = JSON.parse(localStorage.getItem("loginAuth"));
-        console.log('credentials', credentials);
-        // loginCredentials.username = credentials.username;
-        //  loginCredentials.password = credentials.password;
+    var credentials = JSON.parse(localStorage.getItem("loginAuth"));
+    console.log(credentials);
+    if (localStorage.loginAuth !="") {
+       loginCredentials.username = credentials.username;
+        loginCredentials.password = credentials.password;
         var outputJSON = JSON.stringify(loginCredentials);
         console.log(outputJSON);
-    } else if (loginCredentials.username.length > 0 && loginCredentials.password.length > 0) {
         loginAuth.login({
             action: 'login',
             outputJSON: outputJSON
         });
-    } else {
-        $.mobile.changePage("login", {
-            transition: "slide"
-        });
-
     }
 }
 

@@ -18,24 +18,24 @@ function setupPageLogin() {
                 action: 'login',
                 outputJSON: outputJSON
             });
-            
+
             localStorage.setItem('loginAuth', outputJSON);
-           // console.log(outputJSON.username);
+            // console.log(outputJSON.username);
             //localStorage.setItem('userinfo',outputJSON);
             var myusername = JSON.parse(localStorage.getItem('loginAuth'));
-           // localStorage.setItem('userinfo',outputJSON);
+            // localStorage.setItem('userinfo',outputJSON);
 
             console.log(myusername.username);
-            localStorage.setItem('username',myusername.username);
-            setTimeout(function(){ 
+            localStorage.setItem('username', myusername.username);
+            setTimeout(function () {
                 var theCookie = localStorage.getItem('auth');
                 //console.log('theCookie',theCookie);
                 var mycookie = JSON.parse(theCookie);
-                document.cookie = 'cookie='+mycookie.cookie;
-               // console.log('cookie',mycookie.cookie);
+                document.cookie = 'cookie=' + mycookie.cookie;
+                // console.log('cookie',mycookie.cookie);
             }, 1000);
 
-         
+
         } else {
             alert('all fields are required');
         }
@@ -43,30 +43,37 @@ function setupPageLogin() {
 }
 
 
-function loggedCheck(){
-    
-    setTimeout(function(){ 
-        var myClientCookieItems = JSON.parse(localStorage.getItem('auth'));
-        console.log('myClientCookieItems: ', myClientCookieItems);
-        var myClientCookie = myClientCookieItems.cookie;
-        console.log('myClientCookie: ', 'cookie='+myClientCookie);
-        console.log('serverCookie: ', document.cookie);
-        if (myClientCookie = document.cookie) {
-            //do something when user logged in
+function loggedCheck() {
+    persisLog();
+  /*   setTimeout(function () {
+        if (localStorage.auth !== "") {
+            var myClientCookieItems = JSON.parse(localStorage.getItem('auth'));
+            console.log('myClientCookieItems: ', myClientCookieItems);
+            var myClientCookie = myClientCookieItems.cookie;
+             var serverCookie = document.cookie;
+            console.log('myClientCookie: ', 'cookie=' + myClientCookie);
+            console.log('serverCookie: ', document.cookie);
+            if (myClientCookie = document.cookie) {
+                //do something when user logged in
                 console.log("logged");
             } else {
                 //do something when user logged out
                 console.log("logged out");
-            } 
+            }
+        }
+
+
+
     }, 2000);
-  
-  /*   if (document.cookie.indexOf('wp_user_logged_in') !== -1) {
-    //do something when user logged in
-        console.log("logged");
-    } else {
-        //do something when user logged out
-        console.log("logged out");
-    } */
+ */
+
+    /*   if (document.cookie.indexOf('wp_user_logged_in') !== -1) {
+      //do something when user logged in
+          console.log("logged");
+      } else {
+          //do something when user logged out
+          console.log("logged out");
+      } */
 }
 
 function nonceGet() {
@@ -92,7 +99,7 @@ function nonceGet() {
                  
              } */
         }
-      
+
     });
 
 }
@@ -103,21 +110,21 @@ function setupPageHome() {
 
     loggedCheck();
     logoutUser();
-   // var userAuth = localStorage.getItem("auth");
-   var userloggedname = localStorage.getItem("auth");
+    // var userAuth = localStorage.getItem("auth");
+    var userloggedname = localStorage.getItem("auth");
     var loginAuth = JSON.parse(localStorage.getItem('loginAuth'));
     if (loginCredentials.username.length == 0 && localStorage.username == null || localStorage.username == "") {
-  //  if (loginCredentials.username.length == 0 ) {
+        //  if (loginCredentials.username.length == 0 ) {
         $.mobile.changePage("#login", {
             transition: "slide"
         });
-    }else{
-    $(this).find('[data-role="header"] h3').html('').append('hi ' + localStorage.username);
-}
+    } else {
+        $(this).find('[data-role="header"] h3').html('').append('hi ' + localStorage.username);
+    }
 
 }
 
- 
+
 function logoutUser() {
     $('#logout').on('click', function () {
         localStorage.removeItem("auth");
@@ -127,26 +134,26 @@ function logoutUser() {
         $.mobile.changePage("#login", {
             transition: "slide"
         });
-        loggedCheck();
+        // loggedCheck();
     });
 }
 
 
 
 function gotoHome() {
-$('#home-button').on('click', function () {
-    if(localStorage.username !== null || localStorage.username !== "" ) {
-        // this will only work if the token is set in the localStorage
-        $.mobile.changePage("#index", {
-            transition: "slide"
-        });
-    }else{
-        $.mobile.changePage("#", {
-            transition: "slide"
-        });
-       
-    }
-})
+    $('#home-button').on('click', function () {
+        if (localStorage.username !== null || localStorage.username !== "") {
+            // this will only work if the token is set in the localStorage
+            $.mobile.changePage("#index", {
+                transition: "slide"
+            });
+        } else {
+            $.mobile.changePage("#", {
+                transition: "slide"
+            });
+
+        }
+    })
 }
 
 
@@ -197,6 +204,29 @@ var loginAuth = {
         });
 
         console.log(loginData);
+    }
+}
+
+
+
+function persisLog() {
+    if (localStorage.loginAuth !== "") {
+        var credentials = JSON.parse(localStorage.getItem("loginAuth"));
+        console.log('credentials', credentials);
+        // loginCredentials.username = credentials.username;
+        //  loginCredentials.password = credentials.password;
+        var outputJSON = JSON.stringify(loginCredentials);
+        console.log(outputJSON);
+    } else if (loginCredentials.username.length > 0 && loginCredentials.password.length > 0) {
+        loginAuth.login({
+            action: 'login',
+            outputJSON: outputJSON
+        });
+    } else {
+        $.mobile.changePage("login", {
+            transition: "slide"
+        });
+
     }
 }
 

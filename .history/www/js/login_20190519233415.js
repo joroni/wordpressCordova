@@ -45,15 +45,15 @@ function setupPageLogin() {
 
 function loggedCheck() {
     persisLog();
-  /*   setTimeout(function () {
+    setTimeout(function () {
         if (localStorage.auth !== "") {
             var myClientCookieItems = JSON.parse(localStorage.getItem('auth'));
             console.log('myClientCookieItems: ', myClientCookieItems);
             var myClientCookie = myClientCookieItems.cookie;
              var serverCookie = document.cookie;
-            console.log('myClientCookie: ', 'cookie=' + myClientCookie);
-            console.log('serverCookie: ', document.cookie);
-            if (myClientCookie = document.cookie) {
+           // console.log('myClientCookie: ', 'cookie=' + myClientCookie);
+           // console.log('serverCookie: ', document.cookie);
+            if (myClientCookie = serverCookie) {
                 //do something when user logged in
                 console.log("logged");
             } else {
@@ -65,7 +65,7 @@ function loggedCheck() {
 
 
     }, 2000);
- */
+
 
     /*   if (document.cookie.indexOf('wp_user_logged_in') !== -1) {
       //do something when user logged in
