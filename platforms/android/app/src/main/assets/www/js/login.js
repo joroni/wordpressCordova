@@ -5,7 +5,7 @@ var loginCredentials = {
 $base_url = "http://178.128.63.151/bnext2";
 
 function setupPageLogin() {
- 
+    loggedCheck();
     nonceGet();
     gotoHome();
     $('#login-button').on('click', function () {
@@ -21,19 +21,19 @@ function setupPageLogin() {
             
             localStorage.setItem('loginAuth', outputJSON);
            // console.log(outputJSON.username);
-            localStorage.setItem('userinfo',outputJSON);
-            var myusername = JSON.parse(localStorage.getItem('userinfo'));
-            localStorage.setItem('userinfo',outputJSON);
+            //localStorage.setItem('userinfo',outputJSON);
+            var myusername = JSON.parse(localStorage.getItem('loginAuth'));
+           // localStorage.setItem('userinfo',outputJSON);
 
             console.log(myusername.username);
             localStorage.setItem('username',myusername.username);
             setTimeout(function(){ 
                 var theCookie = localStorage.getItem('auth');
-                console.log('theCookie',theCookie);
+                //console.log('theCookie',theCookie);
                 var mycookie = JSON.parse(theCookie);
-                //document.cookie = 'cookie='+mycookie.cookie;
+                document.cookie = 'cookie='+mycookie.cookie;
                // console.log('cookie',mycookie.cookie);
-            }, 3000);
+            }, 1000);
 
          
         } else {
@@ -44,13 +44,29 @@ function setupPageLogin() {
 
 
 function loggedCheck(){
-    if (document.cookie.indexOf('wp_user_logged_in') !== -1) {
+    
+    setTimeout(function(){ 
+        var myClientCookieItems = JSON.parse(localStorage.getItem('auth'));
+        console.log('myClientCookieItems: ', myClientCookieItems);
+        var myClientCookie = myClientCookieItems.cookie;
+        console.log('myClientCookie: ', 'cookie='+myClientCookie);
+        console.log('serverCookie: ', document.cookie);
+        if (myClientCookie = document.cookie) {
+            //do something when user logged in
+                console.log("logged");
+            } else {
+                //do something when user logged out
+                console.log("logged out");
+            } 
+    }, 2000);
+  
+  /*   if (document.cookie.indexOf('wp_user_logged_in') !== -1) {
     //do something when user logged in
         console.log("logged");
     } else {
         //do something when user logged out
         console.log("logged out");
-    }
+    } */
 }
 
 function nonceGet() {
@@ -76,6 +92,7 @@ function nonceGet() {
                  
              } */
         }
+      
     });
 
 }
@@ -83,7 +100,8 @@ function nonceGet() {
 
 
 function setupPageHome() {
-   // loggedCheck();
+
+    loggedCheck();
     logoutUser();
    // var userAuth = localStorage.getItem("auth");
    var userloggedname = localStorage.getItem("auth");
@@ -99,7 +117,7 @@ function setupPageHome() {
 
 }
 
-
+ 
 function logoutUser() {
     $('#logout').on('click', function () {
         localStorage.removeItem("auth");
@@ -109,6 +127,7 @@ function logoutUser() {
         $.mobile.changePage("#login", {
             transition: "slide"
         });
+        loggedCheck();
     });
 }
 

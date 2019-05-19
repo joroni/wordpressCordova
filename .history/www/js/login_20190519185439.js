@@ -33,7 +33,7 @@ function setupPageLogin() {
                 var mycookie = JSON.parse(theCookie);
                 document.cookie = 'cookie='+mycookie.cookie;
                // console.log('cookie',mycookie.cookie);
-            }, 1000);
+            }, 3000);
 
          
         } else {

@@ -33,7 +33,7 @@ function setupPageLogin() {
                 var mycookie = JSON.parse(theCookie);
                 document.cookie = 'cookie='+mycookie.cookie;
                // console.log('cookie',mycookie.cookie);
-            }, 1000);
+            }, 3000);
 
          
         } else {
@@ -58,7 +58,7 @@ function loggedCheck(){
                 //do something when user logged out
                 console.log("logged out");
             } 
-    }, 2000);
+    }, 5000);
   
   /*   if (document.cookie.indexOf('wp_user_logged_in') !== -1) {
     //do something when user logged in
@@ -127,7 +127,6 @@ function logoutUser() {
         $.mobile.changePage("#login", {
             transition: "slide"
         });
-        loggedCheck();
     });
 }
 
