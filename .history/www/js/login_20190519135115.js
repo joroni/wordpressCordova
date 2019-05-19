@@ -52,20 +52,18 @@ function setupPageHome(){
     if(loginCredentials.username.length == 0 && loginAuth.username == "" && loginAuth.password == ""){
         $.mobile.changePage( "#login", { transition: "slide"} );
     }
-    $(this).find('[data-role="header"] h3').append('hi ' + loginAuth.username);
+    $(this).find[('[data-role="header"] h3').append('hi ' + loginAuth.username);
+   
 }
 
 
 function logoutUser(){
-
-$('#logout').on('click', function(){
-    
-    localStorage.removeItem("auth");
-    localStorage.removeItem("loginAuth");
-    
-        $.mobile.changePage( "#login", { transition: "slide"} );
-    
-});
+        $('#logout').on('click', function(){
+            alert('logout');
+            localStorage.removeItem("auth");
+                $.mobile.changePage( "#login", { transition: "slide"} );
+            
+        });
 }
 
 
@@ -120,5 +118,6 @@ var loginAuth = {
     }
 }    
 
+logoutUser();
 $(document).on('pagecreate', '#login', setupPageLogin);
 $(document).on('pagebeforeshow', '#index', setupPageHome);

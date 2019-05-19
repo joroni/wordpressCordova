@@ -46,7 +46,6 @@ function nonceGet(){
 
 
 function setupPageHome(){ 
-    logoutUser();
     var userAuth = localStorage.getItem("auth");
     var loginAuth = JSON.parse(localStorage.getItem('loginAuth'));
     if(loginCredentials.username.length == 0 && loginAuth.username == "" && loginAuth.password == ""){
@@ -56,19 +55,13 @@ function setupPageHome(){
 }
 
 
-function logoutUser(){
 
-$('#logout').on('click', function(){
-    
-    localStorage.removeItem("auth");
-    localStorage.removeItem("loginAuth");
+function logoutUser(){ 
+    var userAuth = localStorage.removeItem("auth");
     
         $.mobile.changePage( "#login", { transition: "slide"} );
     
-});
 }
-
-
 
 
 

@@ -61,7 +61,7 @@ function logoutUser(){
 $('#logout').on('click', function(){
     
     localStorage.removeItem("auth");
-    localStorage.removeItem("loginAuth");
+    localStorage.removeItem("autloginAuth");
     
         $.mobile.changePage( "#login", { transition: "slide"} );
     

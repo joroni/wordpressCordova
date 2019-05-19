@@ -46,23 +46,20 @@ function nonceGet(){
 
 
 function setupPageHome(){ 
-    logoutUser();
     var userAuth = localStorage.getItem("auth");
     var loginAuth = JSON.parse(localStorage.getItem('loginAuth'));
     if(loginCredentials.username.length == 0 && loginAuth.username == "" && loginAuth.password == ""){
         $.mobile.changePage( "#login", { transition: "slide"} );
     }
-    $(this).find('[data-role="header"] h3').append('hi ' + loginAuth.username);
+    $(this).find[('[data-role="header"] h3').append('hi ' + loginAuth.username)];
+    logoutUser();
 }
 
 
 function logoutUser(){
-
 $('#logout').on('click', function(){
-    
+    alert('logout');
     localStorage.removeItem("auth");
-    localStorage.removeItem("loginAuth");
-    
         $.mobile.changePage( "#login", { transition: "slide"} );
     
 });
@@ -120,5 +117,6 @@ var loginAuth = {
     }
 }    
 
+logoutUser();
 $(document).on('pagecreate', '#login', setupPageLogin);
 $(document).on('pagebeforeshow', '#index', setupPageHome);

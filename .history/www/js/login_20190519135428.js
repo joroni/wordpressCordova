@@ -59,9 +59,9 @@ function setupPageHome(){
 function logoutUser(){
 
 $('#logout').on('click', function(){
-    
+    alert('logout');
     localStorage.removeItem("auth");
-    localStorage.removeItem("loginAuth");
+    localStorage.removeItem("autloginAuthh");
     
         $.mobile.changePage( "#login", { transition: "slide"} );
     
