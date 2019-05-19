@@ -7,7 +7,7 @@ $base_url = "http://178.128.63.151/bnext2";
 function setupPageLogin() {
  
     nonceGet();
-    gotoHome();
+    
     $('#login-button').on('click', function () {
         if ($('#username').val().length > 0 && $('#password').val().length > 0) {
             loginCredentials.username = $('#username').val();
@@ -20,19 +20,15 @@ function setupPageLogin() {
             });
             
             localStorage.setItem('loginAuth', outputJSON);
-           // console.log(outputJSON.username);
-            localStorage.setItem('userinfo',outputJSON);
-            var myusername = JSON.parse(localStorage.getItem('userinfo'));
-            localStorage.setItem('userinfo',outputJSON);
-
-            console.log(myusername.username);
-            localStorage.setItem('username',myusername.username);
+            
+          
             setTimeout(function(){ 
+                
                 var theCookie = localStorage.getItem('auth');
                 console.log('theCookie',theCookie);
                 var mycookie = JSON.parse(theCookie);
-                //document.cookie = 'cookie='+mycookie.cookie;
-               // console.log('cookie',mycookie.cookie);
+                document.cookie = 'cookie='+mycookie.cookie;
+                console.log('cookie',mycookie.cookie);
             }, 3000);
 
          
@@ -83,20 +79,23 @@ function nonceGet() {
 
 
 function setupPageHome() {
-   // loggedCheck();
+    loggedCheck();
     logoutUser();
    // var userAuth = localStorage.getItem("auth");
-   var userloggedname = localStorage.getItem("auth");
     var loginAuth = JSON.parse(localStorage.getItem('loginAuth'));
-    if (loginCredentials.username.length == 0 && localStorage.username == null || localStorage.username == "") {
-  //  if (loginCredentials.username.length == 0 ) {
+    if (loginCredentials.username.length == 0 && loginAuth.username == "" && loginAuth.password == "") {
         $.mobile.changePage("#login", {
             transition: "slide"
         });
-    }else{
-    $(this).find('[data-role="header"] h3').html('').append('hi ' + localStorage.username);
-}
+    }
+    $(this).find('[data-role="header"] h3').append('hi ' + loginAuth.username);
 
+
+$('#home-button').on('click', function () {
+    $.mobile.changePage("#index", {
+        transition: "slide"
+    });
+})
 }
 
 
@@ -104,8 +103,6 @@ function logoutUser() {
     $('#logout').on('click', function () {
         localStorage.removeItem("auth");
         localStorage.removeItem("loginAuth");
-        localStorage.removeItem("userinfo");
-        localStorage.removeItem("username");
         $.mobile.changePage("#login", {
             transition: "slide"
         });
@@ -114,21 +111,7 @@ function logoutUser() {
 
 
 
-function gotoHome() {
-$('#home-button').on('click', function () {
-    if(localStorage.username !== null || localStorage.username !== "" ) {
-        // this will only work if the token is set in the localStorage
-        $.mobile.changePage("#index", {
-            transition: "slide"
-        });
-    }else{
-        $.mobile.changePage("#", {
-            transition: "slide"
-        });
-       
-    }
-})
-}
+
 
 
 //var username = $("#username").val();

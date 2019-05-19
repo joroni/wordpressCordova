@@ -32,7 +32,7 @@ function setupPageLogin() {
                 console.log('theCookie',theCookie);
                 var mycookie = JSON.parse(theCookie);
                 //document.cookie = 'cookie='+mycookie.cookie;
-               // console.log('cookie',mycookie.cookie);
+                console.log('cookie',mycookie.cookie);
             }, 3000);
 
          
@@ -94,7 +94,7 @@ function setupPageHome() {
             transition: "slide"
         });
     }else{
-    $(this).find('[data-role="header"] h3').html('').append('hi ' + localStorage.username);
+    $(this).find('[data-role="header"] h3').html('').append('hi ' + loginAuth.username);
 }
 
 }
