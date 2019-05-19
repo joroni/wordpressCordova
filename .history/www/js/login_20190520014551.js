@@ -5,11 +5,9 @@ var loginCredentials = {
 $base_url = "http://178.128.63.151/bnext2";
 
 function setupPageLogin() {
-   
+    persisLog();
     nonceGet();
     gotoHome();
-
-    persisLog();
     $('#login-button').on('click', function () {
         if ($('#username').val().length > 0 && $('#password').val().length > 0) {
             loginCredentials.username = $('#username').val();
@@ -143,19 +141,17 @@ function logoutUser() {
 
 
 function gotoHome() {
-    
+    persisLog();
     $('#home-button').on('click', function () {
         if (localStorage.username !== null || localStorage.username !== "") {
             // this will only work if the token is set in the localStorage
             $.mobile.changePage("#index", {
                 transition: "slide"
             });
-            persisLog();
         } else {
             $.mobile.changePage("#", {
                 transition: "slide"
             });
-            persisLog();
 
         }
     })

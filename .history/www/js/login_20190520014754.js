@@ -143,19 +143,17 @@ function logoutUser() {
 
 
 function gotoHome() {
-    
+    persisLog();
     $('#home-button').on('click', function () {
         if (localStorage.username !== null || localStorage.username !== "") {
             // this will only work if the token is set in the localStorage
             $.mobile.changePage("#index", {
                 transition: "slide"
             });
-            persisLog();
         } else {
             $.mobile.changePage("#", {
                 transition: "slide"
             });
-            persisLog();
 
         }
     })

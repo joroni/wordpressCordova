@@ -1,11 +1,11 @@
 {
   "background_color": "#FFF",
   "display": "standalone",
-  "name": "wCordovaLogin",
-  "short_name": "wCordovaLogin",
+  "name": "WP Cordova",
+  "short_name": "WP Cordova",
   "version": "net.witr.wcordova.login",
   "description": "A sample Apache Cordova login application.",
-  "author": "witrdotnet",
+  "author": "joroni",
   "icons": [],
   "start_url": "index.html"
 }

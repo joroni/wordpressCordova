@@ -4,12 +4,12 @@
         <param name="android-package" value="org.apache.cordova.whitelist.WhitelistPlugin" />
         <param name="onload" value="true" />
     </feature>
-    <name>wCordovaLogin</name>
+    <name>WP Cordova</name>
     <description>
         A sample Apache Cordova login application.
     </description>
-    <author email="witr.net@gmail.com" href="http://witr.net">
-        witrdotnet
+    <author email="jraymund.niconi@gmail.com" href="http://178.128.63.151/joroni/">
+        joroni
     </author>
     <content src="index.html" />
     <access origin="*" />
