@@ -5,9 +5,8 @@ var loginCredentials = {
 $base_url = "http://178.128.63.151/bnext2";
 
 function setupPageLogin() {
- 
+    one?();
     nonceGet();
-    
     $('#login-button').on('click', function () {
         if ($('#username').val().length > 0 && $('#password').val().length > 0) {
             loginCredentials.username = $('#username').val();
@@ -18,20 +17,7 @@ function setupPageLogin() {
                 action: 'login',
                 outputJSON: outputJSON
             });
-            
             localStorage.setItem('loginAuth', outputJSON);
-            
-          
-            setTimeout(function(){ 
-                
-                var theCookie = localStorage.getItem('auth');
-                console.log('theCookie',theCookie);
-                var mycookie = JSON.parse(theCookie);
-                document.cookie = 'cookie='+mycookie.cookie;
-                console.log('cookie',mycookie.cookie);
-            }, 3000);
-
-         
         } else {
             alert('all fields are required');
         }
@@ -40,10 +26,10 @@ function setupPageLogin() {
 
 
 
-function loggedCheck(){
+function one(){
     if (document.cookie.indexOf('wp_user_logged_in') !== -1) {
     //do something when user logged in
-        console.log("logged");
+    console.log("logged");
     } else {
         //do something when user logged out
         console.log("logged out");
@@ -80,9 +66,8 @@ function nonceGet() {
 
 
 function setupPageHome() {
-    loggedCheck();
     logoutUser();
-   // var userAuth = localStorage.getItem("auth");
+    var userAuth = localStorage.getItem("auth");
     var loginAuth = JSON.parse(localStorage.getItem('loginAuth'));
     if (loginCredentials.username.length == 0 && loginAuth.username == "" && loginAuth.password == "") {
         $.mobile.changePage("#login", {

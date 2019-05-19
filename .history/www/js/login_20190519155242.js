@@ -27,7 +27,7 @@ function setupPageLogin() {
                 var theCookie = localStorage.getItem('auth');
                 console.log('theCookie',theCookie);
                 var mycookie = JSON.parse(theCookie);
-                document.cookie = 'cookie='+mycookie.cookie;
+                //document.cookie = mycookie.cookie;
                 console.log('cookie',mycookie.cookie);
             }, 3000);
 

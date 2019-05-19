@@ -18,20 +18,10 @@ function setupPageLogin() {
                 action: 'login',
                 outputJSON: outputJSON
             });
-            
             localStorage.setItem('loginAuth', outputJSON);
-            
-          
-            setTimeout(function(){ 
-                
-                var theCookie = localStorage.getItem('auth');
-                console.log('theCookie',theCookie);
-                var mycookie = JSON.parse(theCookie);
-                document.cookie = 'cookie='+mycookie.cookie;
-                console.log('cookie',mycookie.cookie);
-            }, 3000);
-
-         
+            var mycookie = JSON.parse(outputJSON);
+            document.cookie = mycookie.cookie;
+            console.log('cookie',document.cookie);
         } else {
             alert('all fields are required');
         }

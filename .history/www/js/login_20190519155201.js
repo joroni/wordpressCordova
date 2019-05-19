@@ -25,13 +25,13 @@ function setupPageLogin() {
             setTimeout(function(){ 
                 
                 var theCookie = localStorage.getItem('auth');
-                console.log('theCookie',theCookie);
-                var mycookie = JSON.parse(theCookie);
-                document.cookie = 'cookie='+mycookie.cookie;
-                console.log('cookie',mycookie.cookie);
+            
             }, 3000);
 
-         
+            console.log('theCookie',theCookie);
+            var mycookie = JSON.parse(theCookie);
+            //document.cookie = mycookie.cookie;
+            console.log('cookie',mycookie);
         } else {
             alert('all fields are required');
         }

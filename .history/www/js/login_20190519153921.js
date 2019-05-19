@@ -18,20 +18,8 @@ function setupPageLogin() {
                 action: 'login',
                 outputJSON: outputJSON
             });
-            
             localStorage.setItem('loginAuth', outputJSON);
-            
-          
-            setTimeout(function(){ 
-                
-                var theCookie = localStorage.getItem('auth');
-                console.log('theCookie',theCookie);
-                var mycookie = JSON.parse(theCookie);
-                document.cookie = 'cookie='+mycookie.cookie;
-                console.log('cookie',mycookie.cookie);
-            }, 3000);
-
-         
+            document.cookie = outputJSON.cookie;
         } else {
             alert('all fields are required');
         }
@@ -82,7 +70,7 @@ function nonceGet() {
 function setupPageHome() {
     loggedCheck();
     logoutUser();
-   // var userAuth = localStorage.getItem("auth");
+    var userAuth = localStorage.getItem("auth");
     var loginAuth = JSON.parse(localStorage.getItem('loginAuth'));
     if (loginCredentials.username.length == 0 && loginAuth.username == "" && loginAuth.password == "") {
         $.mobile.changePage("#login", {
