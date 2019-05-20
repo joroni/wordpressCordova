@@ -22,6 +22,7 @@
     <title>witr cordova template - login</title>
     <style>
         .ui-loader {
+            display: block;
             z-index: 9999999;
             position: fixed;
             top: 50%;
@@ -40,9 +41,10 @@
         }
 
         .ui-icon-loading {
+            background: url(images/ajax-loader.gif);
             background-size: 4.875em 4.875em;
-            background-position-x: -1em;
-            background-position-y: -1em;
+            background-position-x: -2em;
+            background-position-y: -2em;
         }
     </style>
 </head>
@@ -85,7 +87,6 @@
         <!-- home page body -->
         <div data-role="content">
             you are logged in
-            <a data-role="button" id="profile-button">Profile</a>
             <button id="logout">Logout</button>
         </div>
 
@@ -109,8 +110,7 @@
 
         <!-- home page body -->
         <div data-role="content">
-            profile
-            <a data-role="button" id="home-button">Home</a>
+            you are logged in
             <button id="logout">Logout</button>
         </div>
 

@@ -263,7 +263,7 @@ function persisLog() {
       
         var outputJSON = JSON.stringify(loginCredentials);
       //  console.log(outputJSON);
-    } else if (credentials.username.length > 0 && credentials.password.length > 0) {
+    } else if (loginCredentials.username.length > 0 && loginCredentials.password.length > 0) {
         var loginAuth = {
             login: function (loginData) {
                 $.ajax({

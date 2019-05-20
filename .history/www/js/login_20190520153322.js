@@ -126,26 +126,6 @@ function setupPageHome() {
 
 }
 
-function setupPageProfile() {
-    persisLog();
-    gotoHome();
-    logoutUser();
-    // var userAuth = localStorage.getItem("auth");
-    var userloggedname = localStorage.getItem("auth");
-    var loginAuth = JSON.parse(localStorage.getItem('loginAuth'));
-    if (loginCredentials.username.length == 0 && localStorage.username == null || localStorage.username == "") {
-        //  if (loginCredentials.username.length == 0 ) {
-        $.mobile.changePage("#login", {
-            transition: "slide"
-        });
-    } else {
-        $(this).find('[data-role="header"] h3').html('').append('hi ' + localStorage.username);
-    }
-
-}
-
-
-
 
 function logoutUser() {
     $('#logout').on('click', function () {
@@ -262,44 +242,8 @@ function persisLog() {
         console.log('credentials', credentials);
       
         var outputJSON = JSON.stringify(loginCredentials);
-      //  console.log(outputJSON);
-    } else if (credentials.username.length > 0 && credentials.password.length > 0) {
-        var loginAuth = {
-            login: function (loginData) {
-                $.ajax({
-                    url: $base_url + '/api/user/generate_auth_cookie/?username=' + credentials.username + '&password=' + credentials.password + '&insecure=cool',
-                    data: loginData,
-                    async: true,
-                    beforeSend: function () {
-                        $.mobile.loading('show');
-                    },
-                    complete: function (loginData) {
-                        $.mobile.loading('hide');
-        
-                        console.log('loginData', loginData.responseText);
-                        var str1 = loginData.responseText;
-                        var str2 = "filtering"
-                        var str3 = str1.replace(str2, "");
-                        localStorage.setItem("auth", str3);
-        
-                        var lol2 = localStorage.getItem("auth");
-                        var lol3 = JSON.parse(lol2);
-                        console.log(lol3);
-                        if (lol3.status == "error") {
-                            alert('Login failed. Please try again!');
-                        } else {
-                            $.mobile.changePage("#index", {
-                                transition: "slide"
-                            });
-                        }
-                    },
-        
-                });
-        
-                console.log(loginData);
-            }
-        }
-        
+        console.log(outputJSON);
+    } else if (loginCredentials.username.length > 0 && loginCredentials.password.length > 0) {
         loginAuth.login({
             action: 'login',
             outputJSON: outputJSON
