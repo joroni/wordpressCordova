@@ -123,10 +123,6 @@ function logoutUser() {
 
 
 function gotoHome() {
-    persisLog();
-    logoutUser();
-
-
     $('#home-button').on('click', function () {
         if (localStorage.username !== null || localStorage.username !== "") {
             // this will only work if the token is set in the localStorage
@@ -146,14 +142,10 @@ function gotoHome() {
 
 
 function gotoProfile() {
-    persisLog();
-    logoutUser();
-
-
     $('#home-button').on('click', function () {
         if (localStorage.username !== null || localStorage.username !== "") {
             // this will only work if the token is set in the localStorage
-            $.mobile.changePage("#index", {
+            $.mobile.changePage("#home", {
                 transition: "slide"
             });
         } else {

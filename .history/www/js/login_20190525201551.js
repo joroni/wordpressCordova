@@ -5,8 +5,8 @@ var loginCredentials = {
 $base_url = "https://justinpineda.com";
 
 function setupPageLogin() {
+    loggedCheck();
     nonceGet();
-    persisLog();
     gotoHome();
     $('#login-button').on('click', function () {
         if ($('#username').val().length > 0 && $('#password').val().length > 0) {
@@ -43,6 +43,38 @@ function setupPageLogin() {
 }
 
 
+function loggedCheck() {
+    // persisLog();
+  /*   setTimeout(function () {
+        if (localStorage.auth !== "") {
+            var myClientCookieItems = JSON.parse(localStorage.getItem('auth'));
+            console.log('myClientCookieItems: ', myClientCookieItems);
+            var myClientCookie = myClientCookieItems.cookie;
+             var serverCookie = document.cookie;
+            console.log('myClientCookie: ', 'cookie=' + myClientCookie);
+            console.log('serverCookie: ', document.cookie);
+            if (myClientCookie = document.cookie) {
+                //do something when user logged in
+                console.log("logged");
+            } else {
+                //do something when user logged out
+                console.log("logged out");
+            }
+        }
+
+
+
+    }, 2000);
+ */
+
+    /*   if (document.cookie.indexOf('wp_user_logged_in') !== -1) {
+      //do something when user logged in
+          console.log("logged");
+      } else {
+          //do something when user logged out
+          console.log("logged out");
+      } */
+}
 
 function nonceGet() {
     $.ajax({
@@ -75,23 +107,9 @@ function nonceGet() {
 
 
 function setupPageHome() {
-    persisLog();
+
+    loggedCheck();
     logoutUser();
-
-
-    $('#profile-button').on('click', function () {
-        if (localStorage.username !== null || localStorage.username !== "") {
-            // this will only work if the token is set in the localStorage
-            $.mobile.changePage("#profile", {
-                transition: "slide"
-            });
-        } else {
-            $.mobile.changePage("#", {
-                transition: "slide"
-            });
-
-        }
-    })
     // var userAuth = localStorage.getItem("auth");
     var userloggedname = localStorage.getItem("auth");
     var loginAuth = JSON.parse(localStorage.getItem('loginAuth'));
@@ -123,10 +141,6 @@ function logoutUser() {
 
 
 function gotoHome() {
-    persisLog();
-    logoutUser();
-
-
     $('#home-button').on('click', function () {
         if (localStorage.username !== null || localStorage.username !== "") {
             // this will only work if the token is set in the localStorage
@@ -141,30 +155,6 @@ function gotoHome() {
         }
     })
 }
-
-
-
-
-function gotoProfile() {
-    persisLog();
-    logoutUser();
-
-
-    $('#home-button').on('click', function () {
-        if (localStorage.username !== null || localStorage.username !== "") {
-            // this will only work if the token is set in the localStorage
-            $.mobile.changePage("#index", {
-                transition: "slide"
-            });
-        } else {
-            $.mobile.changePage("#", {
-                transition: "slide"
-            });
-
-        }
-    })
-}
-
 
 
 //var username = $("#username").val();
@@ -227,23 +217,18 @@ function  persisLog() {
         //  loginCredentials.password = credentials.password;
         var outputJSON = JSON.stringify(loginCredentials);
         console.log(outputJSON);
-        } /* else if (loginCredentials.username.length > 0 && loginCredentials.password.length > 0) {
-            loginAuth.login({
-                action: 'login',
-                outputJSON: outputJSON
-            });
-        } */ else if (localStorage.auth.status =="ok") {
-        $.mobile.changePage("index", {
-            transition: "slide"
+    } else if (loginCredentials.username.length > 0 && loginCredentials.password.length > 0) {
+        loginAuth.login({
+            action: 'login',
+            outputJSON: outputJSON
         });
-    }
-    else {
+    } else {
         $.mobile.changePage("login", {
             transition: "slide"
         });
 
     }
 }
-$(document).on('pagebeforeshow', '#profile', gotoProfile);
+
 $(document).on('pagecreate', '#login', setupPageLogin);
 $(document).on('pagebeforeshow', '#index', setupPageHome);

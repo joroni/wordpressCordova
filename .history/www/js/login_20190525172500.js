@@ -2,12 +2,14 @@ var loginCredentials = {
     username: "",
     password: ""
 }
-$base_url = "https://justinpineda.com";
+$base_url = "https://justinpineda.com/]";
 
 function setupPageLogin() {
     nonceGet();
-    persisLog();
     gotoHome();
+    
+
+    persisLog();
     $('#login-button').on('click', function () {
         if ($('#username').val().length > 0 && $('#password').val().length > 0) {
             loginCredentials.username = $('#username').val();
@@ -43,6 +45,38 @@ function setupPageLogin() {
 }
 
 
+function loggedCheck() {
+    persisLog();
+  /*   setTimeout(function () {
+        if (localStorage.auth !== "") {
+            var myClientCookieItems = JSON.parse(localStorage.getItem('auth'));
+            console.log('myClientCookieItems: ', myClientCookieItems);
+            var myClientCookie = myClientCookieItems.cookie;
+             var serverCookie = document.cookie;
+            console.log('myClientCookie: ', 'cookie=' + myClientCookie);
+            console.log('serverCookie: ', document.cookie);
+            if (myClientCookie = document.cookie) {
+                //do something when user logged in
+                console.log("logged");
+            } else {
+                //do something when user logged out
+                console.log("logged out");
+            }
+        }
+
+
+
+    }, 2000);
+ */
+
+    /*   if (document.cookie.indexOf('wp_user_logged_in') !== -1) {
+      //do something when user logged in
+          console.log("logged");
+      } else {
+          //do something when user logged out
+          console.log("logged out");
+      } */
+}
 
 function nonceGet() {
     $.ajax({
@@ -76,22 +110,8 @@ function nonceGet() {
 
 function setupPageHome() {
     persisLog();
+    gotoProfile();
     logoutUser();
-
-
-    $('#profile-button').on('click', function () {
-        if (localStorage.username !== null || localStorage.username !== "") {
-            // this will only work if the token is set in the localStorage
-            $.mobile.changePage("#profile", {
-                transition: "slide"
-            });
-        } else {
-            $.mobile.changePage("#", {
-                transition: "slide"
-            });
-
-        }
-    })
     // var userAuth = localStorage.getItem("auth");
     var userloggedname = localStorage.getItem("auth");
     var loginAuth = JSON.parse(localStorage.getItem('loginAuth'));
@@ -105,6 +125,26 @@ function setupPageHome() {
     }
 
 }
+
+function setupPageProfile() {
+    persisLog();
+    gotoHome();
+    logoutUser();
+    // var userAuth = localStorage.getItem("auth");
+    var userloggedname = localStorage.getItem("auth");
+    var loginAuth = JSON.parse(localStorage.getItem('loginAuth'));
+    if (loginCredentials.username.length == 0 && localStorage.username == null || localStorage.username == "") {
+        //  if (loginCredentials.username.length == 0 ) {
+        $.mobile.changePage("#login", {
+            transition: "slide"
+        });
+    } else {
+        $(this).find('[data-role="header"] h3').html('').append('hi ' + localStorage.username);
+    }
+
+}
+
+
 
 
 function logoutUser() {
@@ -123,48 +163,45 @@ function logoutUser() {
 
 
 function gotoHome() {
-    persisLog();
-    logoutUser();
-
-
+    
     $('#home-button').on('click', function () {
         if (localStorage.username !== null || localStorage.username !== "") {
             // this will only work if the token is set in the localStorage
             $.mobile.changePage("#index", {
                 transition: "slide"
             });
+            
+            persisLog();
         } else {
             $.mobile.changePage("#", {
                 transition: "slide"
             });
+            persisLog();
 
         }
     })
 }
-
-
 
 
 function gotoProfile() {
-    persisLog();
-    logoutUser();
-
-
-    $('#home-button').on('click', function () {
+   
+    $('#profile-button').on('click', function () {
         if (localStorage.username !== null || localStorage.username !== "") {
             // this will only work if the token is set in the localStorage
-            $.mobile.changePage("#index", {
+            $.mobile.changePage("#profile", {
                 transition: "slide"
             });
+            
+            persisLog();
         } else {
             $.mobile.changePage("#", {
                 transition: "slide"
             });
+            persisLog();
 
         }
     })
 }
-
 
 
 //var username = $("#username").val();
@@ -182,7 +219,7 @@ var loginAuth = {
             complete: function (loginData) {
                 $.mobile.loading('hide');
 
-                console.log(loginData.responseText);
+                console.log('loginData', loginData.responseText);
                 var str1 = loginData.responseText;
                 var str2 = "filtering"
                 var str3 = str1.replace(str2, "");
@@ -219,31 +256,61 @@ var loginAuth = {
 
 
 
-function  persisLog() {
+function persisLog() {
     if (localStorage.loginAuth !== "") {
         var credentials = JSON.parse(localStorage.getItem("loginAuth"));
         console.log('credentials', credentials);
-        // loginCredentials.username = credentials.username;
-        //  loginCredentials.password = credentials.password;
+      
         var outputJSON = JSON.stringify(loginCredentials);
-        console.log(outputJSON);
-        } /* else if (loginCredentials.username.length > 0 && loginCredentials.password.length > 0) {
-            loginAuth.login({
-                action: 'login',
-                outputJSON: outputJSON
-            });
-        } */ else if (localStorage.auth.status =="ok") {
-        $.mobile.changePage("index", {
-            transition: "slide"
+      //  console.log(outputJSON);
+    } else if (credentials.username.length > 0 && credentials.password.length > 0) {
+        var loginAuth = {
+            login: function (loginData) {
+                $.ajax({
+                    url: $base_url + '/api/user/generate_auth_cookie/?username=' + credentials.username + '&password=' + credentials.password + '&insecure=cool',
+                    data: loginData,
+                    async: true,
+                    beforeSend: function () {
+                        $.mobile.loading('show');
+                    },
+                    complete: function (loginData) {
+                        $.mobile.loading('hide');
+        
+                        console.log('loginData', loginData.responseText);
+                        var str1 = loginData.responseText;
+                        var str2 = "filtering"
+                        var str3 = str1.replace(str2, "");
+                        localStorage.setItem("auth", str3);
+        
+                        var lol2 = localStorage.getItem("auth");
+                        var lol3 = JSON.parse(lol2);
+                        console.log(lol3);
+                        if (lol3.status == "error") {
+                            alert('Login failed. Please try again!');
+                        } else {
+                            $.mobile.changePage("#index", {
+                                transition: "slide"
+                            });
+                        }
+                    },
+        
+                });
+        
+                console.log(loginData);
+            }
+        }
+        
+        loginAuth.login({
+            action: 'login',
+            outputJSON: outputJSON
         });
-    }
-    else {
+    } else {
         $.mobile.changePage("login", {
             transition: "slide"
         });
 
     }
 }
-$(document).on('pagebeforeshow', '#profile', gotoProfile);
+
 $(document).on('pagecreate', '#login', setupPageLogin);
 $(document).on('pagebeforeshow', '#index', setupPageHome);

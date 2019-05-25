@@ -5,6 +5,8 @@ var loginCredentials = {
 $base_url = "https://justinpineda.com";
 
 function setupPageLogin() {
+   // loggedCheck();
+   
     nonceGet();
     persisLog();
     gotoHome();
@@ -75,23 +77,9 @@ function nonceGet() {
 
 
 function setupPageHome() {
-    persisLog();
+
+    //loggedCheck();
     logoutUser();
-
-
-    $('#profile-button').on('click', function () {
-        if (localStorage.username !== null || localStorage.username !== "") {
-            // this will only work if the token is set in the localStorage
-            $.mobile.changePage("#profile", {
-                transition: "slide"
-            });
-        } else {
-            $.mobile.changePage("#", {
-                transition: "slide"
-            });
-
-        }
-    })
     // var userAuth = localStorage.getItem("auth");
     var userloggedname = localStorage.getItem("auth");
     var loginAuth = JSON.parse(localStorage.getItem('loginAuth'));
@@ -123,10 +111,6 @@ function logoutUser() {
 
 
 function gotoHome() {
-    persisLog();
-    logoutUser();
-
-
     $('#home-button').on('click', function () {
         if (localStorage.username !== null || localStorage.username !== "") {
             // this will only work if the token is set in the localStorage
@@ -141,30 +125,6 @@ function gotoHome() {
         }
     })
 }
-
-
-
-
-function gotoProfile() {
-    persisLog();
-    logoutUser();
-
-
-    $('#home-button').on('click', function () {
-        if (localStorage.username !== null || localStorage.username !== "") {
-            // this will only work if the token is set in the localStorage
-            $.mobile.changePage("#index", {
-                transition: "slide"
-            });
-        } else {
-            $.mobile.changePage("#", {
-                transition: "slide"
-            });
-
-        }
-    })
-}
-
 
 
 //var username = $("#username").val();
@@ -244,6 +204,6 @@ function  persisLog() {
 
     }
 }
-$(document).on('pagebeforeshow', '#profile', gotoProfile);
+
 $(document).on('pagecreate', '#login', setupPageLogin);
 $(document).on('pagebeforeshow', '#index', setupPageHome);

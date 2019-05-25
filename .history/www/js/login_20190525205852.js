@@ -77,21 +77,6 @@ function nonceGet() {
 function setupPageHome() {
     persisLog();
     logoutUser();
-
-
-    $('#profile-button').on('click', function () {
-        if (localStorage.username !== null || localStorage.username !== "") {
-            // this will only work if the token is set in the localStorage
-            $.mobile.changePage("#profile", {
-                transition: "slide"
-            });
-        } else {
-            $.mobile.changePage("#", {
-                transition: "slide"
-            });
-
-        }
-    })
     // var userAuth = localStorage.getItem("auth");
     var userloggedname = localStorage.getItem("auth");
     var loginAuth = JSON.parse(localStorage.getItem('loginAuth'));
@@ -123,10 +108,6 @@ function logoutUser() {
 
 
 function gotoHome() {
-    persisLog();
-    logoutUser();
-
-
     $('#home-button').on('click', function () {
         if (localStorage.username !== null || localStorage.username !== "") {
             // this will only work if the token is set in the localStorage
@@ -146,14 +127,10 @@ function gotoHome() {
 
 
 function gotoProfile() {
-    persisLog();
-    logoutUser();
-
-
-    $('#home-button').on('click', function () {
+    $('#profile-button').on('click', function () {
         if (localStorage.username !== null || localStorage.username !== "") {
             // this will only work if the token is set in the localStorage
-            $.mobile.changePage("#index", {
+            $.mobile.changePage("#profile", {
                 transition: "slide"
             });
         } else {

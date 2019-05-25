@@ -77,7 +77,17 @@ function nonceGet() {
 function setupPageHome() {
     persisLog();
     logoutUser();
-
+    // var userAuth = localStorage.getItem("auth");
+    var userloggedname = localStorage.getItem("auth");
+    var loginAuth = JSON.parse(localStorage.getItem('loginAuth'));
+    if (loginCredentials.username.length == 0 && localStorage.username == null || localStorage.username == "") {
+        //  if (loginCredentials.username.length == 0 ) {
+        $.mobile.changePage("#login", {
+            transition: "slide"
+        });
+    } else {
+        $(this).find('[data-role="header"] h3').html('').append('hi ' + localStorage.username);
+    },
 
     $('#profile-button').on('click', function () {
         if (localStorage.username !== null || localStorage.username !== "") {
@@ -92,17 +102,6 @@ function setupPageHome() {
 
         }
     })
-    // var userAuth = localStorage.getItem("auth");
-    var userloggedname = localStorage.getItem("auth");
-    var loginAuth = JSON.parse(localStorage.getItem('loginAuth'));
-    if (loginCredentials.username.length == 0 && localStorage.username == null || localStorage.username == "") {
-        //  if (loginCredentials.username.length == 0 ) {
-        $.mobile.changePage("#login", {
-            transition: "slide"
-        });
-    } else {
-        $(this).find('[data-role="header"] h3').html('').append('hi ' + localStorage.username);
-    }
 
 }
 
@@ -123,10 +122,6 @@ function logoutUser() {
 
 
 function gotoHome() {
-    persisLog();
-    logoutUser();
-
-
     $('#home-button').on('click', function () {
         if (localStorage.username !== null || localStorage.username !== "") {
             // this will only work if the token is set in the localStorage
@@ -146,14 +141,10 @@ function gotoHome() {
 
 
 function gotoProfile() {
-    persisLog();
-    logoutUser();
-
-
-    $('#home-button').on('click', function () {
+   /*  $('#profile-button').on('click', function () {
         if (localStorage.username !== null || localStorage.username !== "") {
             // this will only work if the token is set in the localStorage
-            $.mobile.changePage("#index", {
+            $.mobile.changePage("#profile", {
                 transition: "slide"
             });
         } else {
@@ -162,7 +153,7 @@ function gotoProfile() {
             });
 
         }
-    })
+    }) */
 }
 
 
