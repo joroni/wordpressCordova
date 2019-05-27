@@ -6,9 +6,8 @@ $base_url = "https://justinpineda.com";
 
 /*************************** ROUTES and CONTROLLERS **************************/
 function setupPageLogin() {
-   
-    nonceGet();
     persisLog();
+    nonceGet();
     gotoHome();
     $('#login-button').on('click', function () {
         if ($('#username').val().length > 0 && $('#password').val().length > 0) {
@@ -60,20 +59,10 @@ function setupPageHome() {
         });
     } else {
         $(this).find('[data-role="header"] h3').html('').append('hi ' + localStorage.username);
-
-
-
-    $('#profile-button').on('click', function () {
-
-        $.mobile.changePage("#profile", {
-            transition: "slide"
-        });
-
-       
-    })
     }
 
 
+    
 
 }
 
@@ -82,15 +71,12 @@ function setupPageProfile() {
     persisLog();
     nonceGet();
     gotoHome();
-
-
-
 }
 
 
 function gotoHome() {
-    function navHome() {
-        if (localStorage.username !== null) {
+    $('#home-button').on('click', function () {
+        if (localStorage.username !== null || localStorage.username !== "") {
             // this will only work if the token is set in the localStorage
             $.mobile.changePage("#index", {
                 transition: "slide"
@@ -101,9 +87,6 @@ function gotoHome() {
             });
 
         }
-    }
-    $('#home-button').on('click', function () {
-        navHome();
     })
 }
 
@@ -115,6 +98,16 @@ $(document).on('pagebeforeshow', '#index', setupPageHome);
 
 
 /*************************** CONTROLLERS **************************/
+
+$('#profile-button').on('click', function () {
+
+    $.mobile.changePage("#profile", {
+        transition: "slide"
+    });
+
+   
+})
+
 function logoutUser() {
     $('#logout').on('click', function () {
         localStorage.removeItem("auth");
@@ -223,9 +216,9 @@ function persisLog() {
             });
         }
         else {
-           /*  $.mobile.changePage("#index", {
+            $.mobile.changePage("#index", {
                 transition: "slide"
-            }); */
+            });
         }
         /* if (localStorage.loginAuth !== "") {
             var credentials = JSON.parse(localStorage.getItem("loginAuth"));
@@ -245,7 +238,6 @@ function persisLog() {
             });
 
         } */
-        logoutUser();
     
 }
 

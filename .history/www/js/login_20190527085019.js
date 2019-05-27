@@ -6,9 +6,8 @@ $base_url = "https://justinpineda.com";
 
 /*************************** ROUTES and CONTROLLERS **************************/
 function setupPageLogin() {
-   
-    nonceGet();
     persisLog();
+    nonceGet();
     gotoHome();
     $('#login-button').on('click', function () {
         if ($('#username').val().length > 0 && $('#password').val().length > 0) {
@@ -60,20 +59,7 @@ function setupPageHome() {
         });
     } else {
         $(this).find('[data-role="header"] h3').html('').append('hi ' + localStorage.username);
-
-
-
-    $('#profile-button').on('click', function () {
-
-        $.mobile.changePage("#profile", {
-            transition: "slide"
-        });
-
-       
-    })
     }
-
-
 
 }
 
@@ -82,15 +68,44 @@ function setupPageProfile() {
     persisLog();
     nonceGet();
     gotoHome();
+    $('#login-button').on('click', function () {
+        if ($('#username').val().length > 0 && $('#password').val().length > 0) {
+            loginCredentials.username = $('#username').val();
+            loginCredentials.password = $('#password').val();
+            var outputJSON = JSON.stringify(loginCredentials);
+            console.log(outputJSON);
+            loginAuth.login({
+                action: 'login',
+                outputJSON: outputJSON
+            });
+
+            localStorage.setItem('loginAuth', outputJSON);
+            // console.log(outputJSON.username);
+            //localStorage.setItem('userinfo',outputJSON);
+            var myusername = JSON.parse(localStorage.getItem('loginAuth'));
+            // localStorage.setItem('userinfo',outputJSON);
+
+            console.log(myusername.username);
+            localStorage.setItem('username', myusername.username);
+            setTimeout(function () {
+                var theCookie = localStorage.getItem('auth');
+                //console.log('theCookie',theCookie);
+                var mycookie = JSON.parse(theCookie);
+                document.cookie = 'cookie=' + mycookie.cookie;
+                // console.log('cookie',mycookie.cookie);
+            }, 1000);
 
 
-
+        } else {
+            alert('all fields are required');
+        }
+    });
 }
 
 
 function gotoHome() {
-    function navHome() {
-        if (localStorage.username !== null) {
+    $('#home-button').on('click', function () {
+        if (localStorage.username !== null || localStorage.username !== "") {
             // this will only work if the token is set in the localStorage
             $.mobile.changePage("#index", {
                 transition: "slide"
@@ -101,9 +116,6 @@ function gotoHome() {
             });
 
         }
-    }
-    $('#home-button').on('click', function () {
-        navHome();
     })
 }
 
@@ -223,9 +235,9 @@ function persisLog() {
             });
         }
         else {
-           /*  $.mobile.changePage("#index", {
+            $.mobile.changePage("#index", {
                 transition: "slide"
-            }); */
+            });
         }
         /* if (localStorage.loginAuth !== "") {
             var credentials = JSON.parse(localStorage.getItem("loginAuth"));
@@ -245,7 +257,6 @@ function persisLog() {
             });
 
         } */
-        logoutUser();
     
 }
 

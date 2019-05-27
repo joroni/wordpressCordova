@@ -4,11 +4,9 @@ var loginCredentials = {
 }
 $base_url = "https://justinpineda.com";
 
-/*************************** ROUTES and CONTROLLERS **************************/
 function setupPageLogin() {
-   
+    loggedCheck();
     nonceGet();
-    persisLog();
     gotoHome();
     $('#login-button').on('click', function () {
         if ($('#username').val().length > 0 && $('#password').val().length > 0) {
@@ -45,10 +43,72 @@ function setupPageLogin() {
 }
 
 
+function loggedCheck() {
+    // persisLog();
+    /*   setTimeout(function () {
+        if (localStorage.auth !== "") {
+            var myClientCookieItems = JSON.parse(localStorage.getItem('auth'));
+            console.log('myClientCookieItems: ', myClientCookieItems);
+            var myClientCookie = myClientCookieItems.cookie;
+             var serverCookie = document.cookie;
+            console.log('myClientCookie: ', 'cookie=' + myClientCookie);
+            console.log('serverCookie: ', document.cookie);
+            if (myClientCookie = document.cookie) {
+                //do something when user logged in
+                console.log("logged");
+            } else {
+                //do something when user logged out
+                console.log("logged out");
+            }
+        }
+
+
+
+    }, 2000);
+ */
+
+    /*   if (document.cookie.indexOf('wp_user_logged_in') !== -1) {
+      //do something when user logged in
+          console.log("logged");
+      } else {
+          //do something when user logged out
+          console.log("logged out");
+      } */
+}
+
+function nonceGet() {
+    $.ajax({
+        type: 'GET',
+        url: $base_url + '/api/get_nonce/?controller=user&method=generate_auth_cookie',
+        data: {
+            get_param: 'value'
+        },
+        complete: function (data) {
+            var names = data.responseText;
+            //localStorage.setItem('nonce', names);
+            var str1 = names;
+            var str2 = "filtering";
+            var str3 = str1.replace(str2, "");
+            var nonce = JSON.parse(str3)
+            console.log('nonce:', nonce);
+
+            /*  if(nonce.status == "ok"  &&  userAuth !== ""){
+                 $.mobile.changePage( "#index", { transition: "slide"} );
+             }else{
+                 $.mobile.changePage( "#login", { transition: "slide"} );
+                 
+             } */
+        }
+
+    });
+
+}
+
 
 
 function setupPageHome() {
-    persisLog();
+
+    loggedCheck();
     logoutUser();
     // var userAuth = localStorage.getItem("auth");
     var userloggedname = localStorage.getItem("auth");
@@ -60,61 +120,11 @@ function setupPageHome() {
         });
     } else {
         $(this).find('[data-role="header"] h3').html('').append('hi ' + localStorage.username);
-
-
-
-    $('#profile-button').on('click', function () {
-
-        $.mobile.changePage("#profile", {
-            transition: "slide"
-        });
-
-       
-    })
     }
 
-
-
 }
 
 
-function setupPageProfile() {
-    persisLog();
-    nonceGet();
-    gotoHome();
-
-
-
-}
-
-
-function gotoHome() {
-    function navHome() {
-        if (localStorage.username !== null) {
-            // this will only work if the token is set in the localStorage
-            $.mobile.changePage("#index", {
-                transition: "slide"
-            });
-        } else {
-            $.mobile.changePage("#", {
-                transition: "slide"
-            });
-
-        }
-    }
-    $('#home-button').on('click', function () {
-        navHome();
-    })
-}
-
-
-$(document).on('pagecreate', '#login', setupPageLogin);
-$(document).on('pagebeforeshow', '#profile', setupPageProfile);
-$(document).on('pagebeforeshow', '#index', setupPageHome);
-
-
-
-/*************************** CONTROLLERS **************************/
 function logoutUser() {
     $('#logout').on('click', function () {
         localStorage.removeItem("auth");
@@ -130,7 +140,25 @@ function logoutUser() {
 
 
 
+function gotoHome() {
+    $('#home-button').on('click', function () {
+        if (localStorage.username !== null || localStorage.username !== "") {
+            // this will only work if the token is set in the localStorage
+            $.mobile.changePage("#index", {
+                transition: "slide"
+            });
+        } else {
+            $.mobile.changePage("#", {
+                transition: "slide"
+            });
 
+        }
+    })
+}
+
+
+//var username = $("#username").val();
+//var password = $("#password").val();
 
 var loginAuth = {
     login: function (loginData) {
@@ -181,71 +209,36 @@ var loginAuth = {
 
 
 
-function nonceGet() {
-    $.ajax({
-        type: 'GET',
-        url: $base_url + '/api/get_nonce/?controller=user&method=generate_auth_cookie',
-        data: {
-            get_param: 'value'
-        },
-        complete: function (data) {
-            var names = data.responseText;
-            //localStorage.setItem('nonce', names);
-            var str1 = names;
-            var str2 = "filtering";
-            var str3 = str1.replace(str2, "");
-            var nonce = JSON.parse(str3)
-            console.log('nonce:', nonce);
-
-            /*  if(nonce.status == "ok"  &&  userAuth !== ""){
-                 $.mobile.changePage( "#index", { transition: "slide"} );
-             }else{
-                 $.mobile.changePage( "#login", { transition: "slide"} );
-                 
-             } */
-        }
-
-    });
-
-}
-
-
 function persisLog() {
-    
-        var lol2 = localStorage.getItem("auth");
-        var lol3 = JSON.parse(lol2);
-        console.log(lol3);
-        if ( lol3.status == "error") {
-            alert('Login failed. Please try again!');
-        } else if (localStorage.auth == "" || lol3.status == "error" ) {
-            $.mobile.changePage("#login", {
-                transition: "slide"
-            });
-        }
-        else {
-           /*  $.mobile.changePage("#index", {
-                transition: "slide"
-            }); */
-        }
-        /* if (localStorage.loginAuth !== "") {
-            var credentials = JSON.parse(localStorage.getItem("loginAuth"));
-            console.log('credentials', credentials);
-            // loginCredentials.username = credentials.username;
-            //  loginCredentials.password = credentials.password;
-            var outputJSON = JSON.stringify(loginCredentials);
-            console.log(outputJSON);
-        } else if (loginCredentials.username.length > 0 && loginCredentials.password.length > 0) {
-            loginAuth.login({
-                action: 'login',
-                outputJSON: outputJSON
-            });
-        } else {
-            $.mobile.changePage("login", {
-                transition: "slide"
-            });
+    var lol2 = localStorage.getItem("auth");
+    var lol3 = JSON.parse(lol2);
+    console.log(lol3);
+    if (lol3.status == "error") {
+        alert('Login failed. Please try again!');
+    } else {
+        $.mobile.changePage("#index", {
+            transition: "slide"
+        });
+    }
+    /* if (localStorage.loginAuth !== "") {
+        var credentials = JSON.parse(localStorage.getItem("loginAuth"));
+        console.log('credentials', credentials);
+        // loginCredentials.username = credentials.username;
+        //  loginCredentials.password = credentials.password;
+        var outputJSON = JSON.stringify(loginCredentials);
+        console.log(outputJSON);
+    } else if (loginCredentials.username.length > 0 && loginCredentials.password.length > 0) {
+        loginAuth.login({
+            action: 'login',
+            outputJSON: outputJSON
+        });
+    } else {
+        $.mobile.changePage("login", {
+            transition: "slide"
+        });
 
-        } */
-        logoutUser();
-    
+    } */
 }
 
+$(document).on('pagecreate', '#login', setupPageLogin);
+$(document).on('pagebeforeshow', '#index', setupPageHome);

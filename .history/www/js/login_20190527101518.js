@@ -90,7 +90,7 @@ function setupPageProfile() {
 
 function gotoHome() {
     function navHome() {
-        if (localStorage.username !== null) {
+        if (localStorage.username !== null || localStorage.username !== "") {
             // this will only work if the token is set in the localStorage
             $.mobile.changePage("#index", {
                 transition: "slide"

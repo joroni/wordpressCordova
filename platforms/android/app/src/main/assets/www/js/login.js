@@ -4,7 +4,9 @@ var loginCredentials = {
 }
 $base_url = "https://justinpineda.com";
 
+/*************************** ROUTES and CONTROLLERS **************************/
 function setupPageLogin() {
+   
     nonceGet();
     persisLog();
     gotoHome();
@@ -44,54 +46,10 @@ function setupPageLogin() {
 
 
 
-function nonceGet() {
-    $.ajax({
-        type: 'GET',
-        url: $base_url + '/api/get_nonce/?controller=user&method=generate_auth_cookie',
-        data: {
-            get_param: 'value'
-        },
-        complete: function (data) {
-            var names = data.responseText;
-            //localStorage.setItem('nonce', names);
-            var str1 = names;
-            var str2 = "filtering";
-            var str3 = str1.replace(str2, "");
-            var nonce = JSON.parse(str3)
-            console.log('nonce:', nonce);
-
-            /*  if(nonce.status == "ok"  &&  userAuth !== ""){
-                 $.mobile.changePage( "#index", { transition: "slide"} );
-             }else{
-                 $.mobile.changePage( "#login", { transition: "slide"} );
-                 
-             } */
-        }
-
-    });
-
-}
-
-
 
 function setupPageHome() {
     persisLog();
     logoutUser();
-
-
-    $('#profile-button').on('click', function () {
-        if (localStorage.username !== null || localStorage.username !== "") {
-            // this will only work if the token is set in the localStorage
-            $.mobile.changePage("#profile", {
-                transition: "slide"
-            });
-        } else {
-            $.mobile.changePage("#", {
-                transition: "slide"
-            });
-
-        }
-    })
     // var userAuth = localStorage.getItem("auth");
     var userloggedname = localStorage.getItem("auth");
     var loginAuth = JSON.parse(localStorage.getItem('loginAuth'));
@@ -102,11 +60,61 @@ function setupPageHome() {
         });
     } else {
         $(this).find('[data-role="header"] h3').html('').append('hi ' + localStorage.username);
+
+
+
+    $('#profile-button').on('click', function () {
+
+        $.mobile.changePage("#profile", {
+            transition: "slide"
+        });
+
+       
+    })
     }
+
+
 
 }
 
 
+function setupPageProfile() {
+    persisLog();
+    nonceGet();
+    gotoHome();
+
+
+
+}
+
+
+function gotoHome() {
+    function navHome() {
+        if (localStorage.username !== null) {
+            // this will only work if the token is set in the localStorage
+            $.mobile.changePage("#index", {
+                transition: "slide"
+            });
+        } else {
+            $.mobile.changePage("#", {
+                transition: "slide"
+            });
+
+        }
+    }
+    $('#home-button').on('click', function () {
+        navHome();
+    })
+}
+
+
+$(document).on('pagecreate', '#login', setupPageLogin);
+$(document).on('pagebeforeshow', '#profile', setupPageProfile);
+$(document).on('pagebeforeshow', '#index', setupPageHome);
+
+
+
+/*************************** CONTROLLERS **************************/
 function logoutUser() {
     $('#logout').on('click', function () {
         localStorage.removeItem("auth");
@@ -122,53 +130,7 @@ function logoutUser() {
 
 
 
-function gotoHome() {
-    persisLog();
-    logoutUser();
 
-
-    $('#home-button').on('click', function () {
-        if (localStorage.username !== null || localStorage.username !== "") {
-            // this will only work if the token is set in the localStorage
-            $.mobile.changePage("#index", {
-                transition: "slide"
-            });
-        } else {
-            $.mobile.changePage("#", {
-                transition: "slide"
-            });
-
-        }
-    })
-}
-
-
-
-
-function gotoProfile() {
-    persisLog();
-    logoutUser();
-
-
-    $('#home-button').on('click', function () {
-        if (localStorage.username !== null || localStorage.username !== "") {
-            // this will only work if the token is set in the localStorage
-            $.mobile.changePage("#index", {
-                transition: "slide"
-            });
-        } else {
-            $.mobile.changePage("#", {
-                transition: "slide"
-            });
-
-        }
-    })
-}
-
-
-
-//var username = $("#username").val();
-//var password = $("#password").val();
 
 var loginAuth = {
     login: function (loginData) {
@@ -219,31 +181,71 @@ var loginAuth = {
 
 
 
-function  persisLog() {
-    if (localStorage.loginAuth !== "") {
-        var credentials = JSON.parse(localStorage.getItem("loginAuth"));
-        console.log('credentials', credentials);
-        // loginCredentials.username = credentials.username;
-        //  loginCredentials.password = credentials.password;
-        var outputJSON = JSON.stringify(loginCredentials);
-        console.log(outputJSON);
-        } /* else if (loginCredentials.username.length > 0 && loginCredentials.password.length > 0) {
+function nonceGet() {
+    $.ajax({
+        type: 'GET',
+        url: $base_url + '/api/get_nonce/?controller=user&method=generate_auth_cookie',
+        data: {
+            get_param: 'value'
+        },
+        complete: function (data) {
+            var names = data.responseText;
+            //localStorage.setItem('nonce', names);
+            var str1 = names;
+            var str2 = "filtering";
+            var str3 = str1.replace(str2, "");
+            var nonce = JSON.parse(str3)
+            console.log('nonce:', nonce);
+
+            /*  if(nonce.status == "ok"  &&  userAuth !== ""){
+                 $.mobile.changePage( "#index", { transition: "slide"} );
+             }else{
+                 $.mobile.changePage( "#login", { transition: "slide"} );
+                 
+             } */
+        }
+
+    });
+
+}
+
+
+function persisLog() {
+    
+        var lol2 = localStorage.getItem("auth");
+        var lol3 = JSON.parse(lol2);
+        console.log(lol3);
+        if ( lol3.status == "error") {
+            alert('Login failed. Please try again!');
+        } else if (localStorage.auth == "" || lol3.status == "error" ) {
+            $.mobile.changePage("#login", {
+                transition: "slide"
+            });
+        }
+        else {
+           /*  $.mobile.changePage("#index", {
+                transition: "slide"
+            }); */
+        }
+        /* if (localStorage.loginAuth !== "") {
+            var credentials = JSON.parse(localStorage.getItem("loginAuth"));
+            console.log('credentials', credentials);
+            // loginCredentials.username = credentials.username;
+            //  loginCredentials.password = credentials.password;
+            var outputJSON = JSON.stringify(loginCredentials);
+            console.log(outputJSON);
+        } else if (loginCredentials.username.length > 0 && loginCredentials.password.length > 0) {
             loginAuth.login({
                 action: 'login',
                 outputJSON: outputJSON
             });
-        } */ else if (localStorage.auth.status =="ok") {
-        $.mobile.changePage("index", {
-            transition: "slide"
-        });
-    }
-    else {
-        $.mobile.changePage("login", {
-            transition: "slide"
-        });
+        } else {
+            $.mobile.changePage("login", {
+                transition: "slide"
+            });
 
-    }
+        } */
+        logoutUser();
+    
 }
-$(document).on('pagebeforeshow', '#profile', gotoProfile);
-$(document).on('pagecreate', '#login', setupPageLogin);
-$(document).on('pagebeforeshow', '#index', setupPageHome);
+
