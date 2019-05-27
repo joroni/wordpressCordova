@@ -190,7 +190,7 @@ function nonceGet() {
         },
         complete: function (data) {
             var names = data.responseText;
-            localStorage.setItem('nonce', names);
+            //localStorage.setItem('nonce', names);
             var str1 = names;
             var str2 = "filtering";
             var str3 = str1.replace(str2, "");
@@ -211,18 +211,23 @@ function nonceGet() {
 
 
 function persisLog() {
-   
-        var lol2 = localStorage.getItem("nonce");
+    
+        var lol2 = localStorage.getItem("auth");
         var lol3 = JSON.parse(lol2);
         console.log(lol3);
         if (lol3.status == "error") {
             alert('Login failed. Please try again!');
-        } else {
+        } else if (localStorage.auth == "" ) {
+            lol3.status == "error";
             $.mobile.changePage("#login", {
                 transition: "slide"
             });
         }
-       
+        else {
+           /*  $.mobile.changePage("#index", {
+                transition: "slide"
+            }); */
+        }
         /* if (localStorage.loginAuth !== "") {
             var credentials = JSON.parse(localStorage.getItem("loginAuth"));
             console.log('credentials', credentials);
@@ -244,5 +249,4 @@ function persisLog() {
         logoutUser();
     
 }
-
 

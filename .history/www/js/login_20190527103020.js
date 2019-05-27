@@ -211,8 +211,8 @@ function nonceGet() {
 
 
 function persisLog() {
-   
-        var lol2 = localStorage.getItem("nonce");
+    if ( localStorage.auth !== "") {
+        var lol2 = localStorage.getItem("auth");
         var lol3 = JSON.parse(lol2);
         console.log(lol3);
         if (lol3.status == "error") {
@@ -243,6 +243,12 @@ function persisLog() {
         } */
         logoutUser();
     
+} else{
+     localStorage.setItem("auth");
+     
+    $.mobile.changePage("#login", {
+        transition: "slide"
+    });
 }
-
+}
 
