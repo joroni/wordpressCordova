@@ -66,22 +66,18 @@ function setupPageHome() {
         });
     } else {
         $(this).find('[data-role="header"] h3').html('').append('hi ' + localStorage.username);
-        $.mobile.changePage("#index", {
-            transition: "slide"
-        });
 
 
-        
+
+        $('#profile-button').on('click', function () {
+
+            $.mobile.changePage("#index", {
+                transition: "slide"
+            });
+
+
+        })
     }
-
-    $('#profile-button').on('click', function () {
-
-        $.mobile.changePage("#profile", {
-            transition: "slide"
-        });
-
-
-    })
     persisLog();
     logoutUser();
 

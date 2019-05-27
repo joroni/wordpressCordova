@@ -6,13 +6,8 @@ $base_url = "https://justinpineda.com";
 
 /*************************** ROUTES and CONTROLLERS **************************/
 function setupPageLogin() {
-    nonceGet();
-    setTimeout(function () {
-        $.mobile.loading('show');
-        persisLog();
-    }, 2000);
-    $.mobile.loading('hide');
-    
+
+   
     gotoHome();
     $('#login-button').on('click', function () {
         if ($('#username').val().length > 0 && $('#password').val().length > 0) {
@@ -37,19 +32,27 @@ function setupPageLogin() {
                 var theCookie = localStorage.getItem('auth');
                 //console.log('theCookie',theCookie);
                 var mycookie = JSON.parse(theCookie);
-                //document.cookie = 'cookie=' + mycookie.cookie;
+                document.cookie = 'cookie=' + mycookie.cookie;
                 // console.log('cookie',mycookie.cookie);
             }, 1000);
+            nonceGet();
+
 
         } else {
             alert('all fields are required');
         }
     });
 
-   
-  
-   
+  setInterval(myTimer, 1000);
+
+    function myTimer() {
+       
+        persisLog();
+       
+    }
+    
 }
+
 
 
 
@@ -58,32 +61,27 @@ function setupPageHome() {
     // var userAuth = localStorage.getItem("auth");
     var userloggedname = localStorage.getItem("auth");
     var loginAuth = JSON.parse(localStorage.getItem('loginAuth'));
-    //if (loginCredentials.username.length == 0 && localStorage.username == null || localStorage.username == "") {
-        if (loginAuth.username == "" || localStorage.username == null) {
+    if (loginCredentials.username.length == 0 && localStorage.username == null || localStorage.username == "") {
         //  if (loginCredentials.username.length == 0 ) {
         $.mobile.changePage("#login", {
             transition: "slide"
         });
     } else {
         $(this).find('[data-role="header"] h3').html('').append('hi ' + localStorage.username);
-        $.mobile.changePage("#index", {
-            transition: "slide"
-        });
 
 
-        
+
+        $('#profile-button').on('click', function () {
+
+            $.mobile.changePage("#profile", {
+                transition: "slide"
+            });
+
+
+        })
     }
-
-    $('#profile-button').on('click', function () {
-
-        $.mobile.changePage("#profile", {
-            transition: "slide"
-        });
-
-
-    })
-    persisLog();
-    logoutUser();
+    //persisLog();
+    //logoutUser();
 
 
 
@@ -234,7 +232,7 @@ function persisLog() {
             transition: "slide"
         });
     }
-    return false;
+return false;
     /* if (localStorage.loginAuth !== "") {
         var credentials = JSON.parse(localStorage.getItem("loginAuth"));
         console.log('credentials', credentials);

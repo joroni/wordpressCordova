@@ -58,30 +58,25 @@ function setupPageHome() {
     // var userAuth = localStorage.getItem("auth");
     var userloggedname = localStorage.getItem("auth");
     var loginAuth = JSON.parse(localStorage.getItem('loginAuth'));
-    //if (loginCredentials.username.length == 0 && localStorage.username == null || localStorage.username == "") {
-        if (loginAuth.username == "" || localStorage.username == null) {
+    if (loginCredentials.username.length == 0 && localStorage.username == null || localStorage.username == "") {
         //  if (loginCredentials.username.length == 0 ) {
         $.mobile.changePage("#login", {
             transition: "slide"
         });
     } else {
         $(this).find('[data-role="header"] h3').html('').append('hi ' + localStorage.username);
-        $.mobile.changePage("#index", {
-            transition: "slide"
-        });
 
 
-        
+
+        $('#profile-button').on('click', function () {
+
+            $.mobile.changePage("#profile", {
+                transition: "slide"
+            });
+
+
+        })
     }
-
-    $('#profile-button').on('click', function () {
-
-        $.mobile.changePage("#profile", {
-            transition: "slide"
-        });
-
-
-    })
     persisLog();
     logoutUser();
 
