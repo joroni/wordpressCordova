@@ -6,9 +6,9 @@ $base_url = "https://justinpineda.com";
 
 /*************************** ROUTES and CONTROLLERS **************************/
 function setupPageLogin() {
-
+   
     nonceGet();
-
+    persisLog();
     gotoHome();
     $('#login-button').on('click', function () {
         if ($('#username').val().length > 0 && $('#password').val().length > 0) {
@@ -42,22 +42,13 @@ function setupPageLogin() {
             alert('all fields are required');
         }
     });
-
-  setInterval(myTimer, 1000);
-
-    function myTimer() {
-       
-        persisLog();
-       
-    }
-    
 }
 
 
 
 
 function setupPageHome() {
-
+   
     // var userAuth = localStorage.getItem("auth");
     var userloggedname = localStorage.getItem("auth");
     var loginAuth = JSON.parse(localStorage.getItem('loginAuth'));
@@ -71,14 +62,14 @@ function setupPageHome() {
 
 
 
-        $('#profile-button').on('click', function () {
+    $('#profile-button').on('click', function () {
 
-            $.mobile.changePage("#profile", {
-                transition: "slide"
-            });
+        $.mobile.changePage("#profile", {
+            transition: "slide"
+        });
 
-
-        })
+       
+    })
     }
     persisLog();
     logoutUser();
@@ -221,36 +212,38 @@ function nonceGet() {
 
 
 function persisLog() {
+   
+        var lol2 = localStorage.getItem("nonce");
+        var lol3 = JSON.parse(lol2);
+        console.log(lol3);
+        if (lol3.status == "error") {
+            alert('Login failed. Please try again!');
+        } else {
+            $.mobile.changePage("#login", {
+                transition: "slide"
+            });
+        }
+       
+        /* if (localStorage.loginAuth !== "") {
+            var credentials = JSON.parse(localStorage.getItem("loginAuth"));
+            console.log('credentials', credentials);
+            // loginCredentials.username = credentials.username;
+            //  loginCredentials.password = credentials.password;
+            var outputJSON = JSON.stringify(loginCredentials);
+            console.log(outputJSON);
+        } else if (loginCredentials.username.length > 0 && loginCredentials.password.length > 0) {
+            loginAuth.login({
+                action: 'login',
+                outputJSON: outputJSON
+            });
+        } else {
+            $.mobile.changePage("login", {
+                transition: "slide"
+            });
 
-    var lol2 = localStorage.getItem("nonce");
-    var lol3 = JSON.parse(lol2);
-    console.log(lol3);
-    if (lol3.status == "error") {
-        alert('Login failed. Please try again!');
-    } else {
-        $.mobile.changePage("#login", {
-            transition: "slide"
-        });
-    }
-
-    /* if (localStorage.loginAuth !== "") {
-        var credentials = JSON.parse(localStorage.getItem("loginAuth"));
-        console.log('credentials', credentials);
-        // loginCredentials.username = credentials.username;
-        //  loginCredentials.password = credentials.password;
-        var outputJSON = JSON.stringify(loginCredentials);
-        console.log(outputJSON);
-    } else if (loginCredentials.username.length > 0 && loginCredentials.password.length > 0) {
-        loginAuth.login({
-            action: 'login',
-            outputJSON: outputJSON
-        });
-    } else {
-        $.mobile.changePage("login", {
-            transition: "slide"
-        });
-
-    } */
-    logoutUser();
-
+        } */
+        logoutUser();
+    
 }
+
+
